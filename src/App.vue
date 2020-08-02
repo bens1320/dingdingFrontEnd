@@ -10,7 +10,7 @@
 
 <script>
 import TheHeader from '@/components/layouts/TheHeader'
-// 引入 TheFooter.vue 的默认值
+// 引入 TheFooter.vue 的默认值1111
 import TheFooter from '@/components/layouts/TheFooter'
 
 export default {
