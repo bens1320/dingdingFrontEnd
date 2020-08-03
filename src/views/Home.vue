@@ -1,7 +1,7 @@
 <template>
     <div>
         <Message :show.sync="msgShow" :type="msgType" :msg="msg"/>
-        <!-- 帖子列表 -->
+        <!-- 帖子列表 修改了 -->
         <div class="col-md-12 topics-index main-col">
 
             <div class="panel panel-default">
