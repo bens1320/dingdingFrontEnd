@@ -26,22 +26,7 @@
                 links: [
                     {
                         name: 'edit',
-                        title: '第一季度报',
-                        icon: 'list-alt'
-                    },
-                    {
-                        name: 'edit_mid',
-                        title: '年中报',
-                        icon: 'list-alt'
-                    },
-                    {
-                        name: 'edit_third',
-                        title: '第三季度报',
-                        icon: 'list-alt'
-                    },
-                    {
-                        name: 'edit_annual',
-                        title: '年报',
+                        title: '帮我盯着',
                         icon: 'list-alt'
                     },
                 ]

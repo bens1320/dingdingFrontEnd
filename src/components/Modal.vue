@@ -1,6 +1,7 @@
 <template>
   <div>
     <transition
+
       enter-active-class="animated fadeInDown"
       leave-active-class="animated fadeOutUp"
     >

@@ -1,5 +1,39 @@
 <template>
-  <ul v-if="totalPage > 1" class="pagination">
+  <ul v-if="totalPage > 8" class="pagination">
+    <li :class="{ disabled: internalCurrentPage === 1 }">
+      <a href="javascript:;" @click="changePage(internalCurrentPage - 1)">«</a>
+    </li>
+
+      <li v-if="currentPage !== 1" :class="{ active: internalCurrentPage === 1 }">
+        <a href="javascript:;" @click="changePage(1)">1</a>
+      </li>
+      <li v-if="currentPage >= 4" :class="{ disabled: true }">
+        <a href="javascript:;">...</a>
+      </li>
+
+      <li v-if="currentPage >= 3">
+        <a style="background: white;" href="javascript:;" @click="changePage(currentPage - 1)">{{ currentPage - 1 }}</a>
+      </li>
+      <li :class="{ active: internalCurrentPage === currentPage }">
+        <a href="javascript:;" @click="changePage(currentPage)">{{ currentPage }}</a>
+      </li>
+      <li v-if="currentPage <= totalPage - 2">
+        <a style="background: white;" href="javascript:;" @click="changePage(currentPage + 1)">{{ currentPage + 1 }}</a>
+      </li>
+
+      <li v-if="currentPage <= totalPage - 3" :class="{ disabled: true }">
+        <a href="javascript:;">...</a>
+      </li>
+      <li v-if="internalCurrentPage !== totalPage" :class="{ active: internalCurrentPage === totalPage }">
+        <a href="javascript:;" @click="changePage(totalPage)">{{ totalPage }}</a>
+      </li>
+
+    <li :class="{ disabled: internalCurrentPage === totalPage }">
+      <a href="javascript:;" @click="changePage(internalCurrentPage + 1)">»</a>
+    </li>
+  </ul>
+
+  <ul v-else class="pagination">
     <li :class="{ disabled: internalCurrentPage === 1 }">
       <a href="javascript:;" @click="changePage(internalCurrentPage - 1)">«</a>
     </li>

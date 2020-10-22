@@ -16,6 +16,7 @@ import './mock'
 // 引入 axios 的默认值
 import axios from 'axios'
 
+
 // 将 axios 添加到 Vue.prototype 上，使其在实例内部的所有组件中可用
 Vue.prototype.$axios = axios
 
@@ -45,6 +46,7 @@ const AddMockData = (() => {
     store.commit('UPDATE_ARTICLES', userArticles)
   }
 })()
+
 
 new Vue({
   router,
