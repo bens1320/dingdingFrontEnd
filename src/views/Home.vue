@@ -63,10 +63,10 @@
             <tr>
               <th scope="col">股票代码</th>
               <th scope="col">股票名称</th>
-              <th scope="col">送股比例（每股）</th>
-              <th scope="col">转股比例（每股）</th>
               <th scope="col">现金分红（每股）</th>
               <th scope="col">股息率(TTM)</th>
+              <th scope="col">送股比例（每股）</th>
+              <th scope="col">转股比例（每股）</th>
               <th scope="col">公告标题</th>
               <th scope="col">发布日期</th>
             </tr>
@@ -74,11 +74,11 @@
             <tbody>
             <tr v-for="dividend in dividendList" :key="dividend.id">
               <th scope="row">{{dividend.code}}</th>
-              <td>{{dividend.code}}</td>
-              <td>4股</td>
-              <td >6股</td>
-              <td>{{dividend.value}}元</td>
-              <td>{{dividend.rate}}</td>
+              <td>{{dividend.name}}</td>
+              <td>{{dividend.cash}}</td>
+              <td>{{dividend.rate * 100}}%</td>
+              <td>{{dividend.send}}</td>
+              <td >{{dividend.conversion}}</td>
               <td>{{dividend.title}}</td>
               <td>{{dividend.noticeDate}}</td>
             </tr>
@@ -186,8 +186,8 @@ export default {
       this.$route.query.page = 1
       const search = {
         nameOrId: this.nameOrId,
-        cashMin: String(this.cashMin),
-        cashMax: String(this.cashMax),
+        cashMin: this.cashMin,
+        cashMax: this.cashMax,
         sendMin: this.sendMin,
         sendMax: this.sendMax,
         conversionMin: this.conversionMin,
