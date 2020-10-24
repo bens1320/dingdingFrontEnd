@@ -110,6 +110,6 @@ export default {
   display: block;
   height: 100%;
   width: 0%;
-  background: orange;
+  background: #00b5ad;
 }
 </style>

@@ -8,78 +8,114 @@
                 <h2><i class="fa fa-cog"></i>搜索信息</h2>
                 <hr>
                 <div class="form-horizontal" data-validator-form>
-                    <table class="table table-bordered table-hover text-center">
-                        <thead>
-                        <th class="text-center">股票名或代码</th>
-                        <th class="text-center">现金分红区间</th>
-                        <th class="text-center">转股区间</th>
-                        <th class="text-center">送股区间</th>
-                        <th class="text-center">股息率区间</th>
-                        <th class="text-center">创建日期</th>
-                        <th class="text-center">操作</th>
-
-                        </thead>
+                    <table class="table text-center">
+                      <thead>
+                      <th class="text-center">股票名或代码</th>
+                      <th class="text-center">现金分红区间</th>
+                      <th class="text-center">转股区间</th>
+                      <th class="text-center">送股区间</th>
+                      <th class="text-center">股息率区间</th>
+                      <th class="text-center">创建日期</th>
+                      <th class="text-center">操作</th>
+                      </thead>
                       <tbody v-if="allInfo && allInfo.length > 0">
                       <tr v-for='item in allInfo' :key='item.id'>
                         <td>{{ item.nameOrId === '' ? 'All' : item.title_code }}</td>
-                        <td>{{ item.cashMin }}-{{ item.cashMax }}</td>
-                        <td>{{ item.sendMin }}-{{ item.sendMax }}</td>
-                        <td>{{ item.conversionMin }}-{{ item.conversionMax }}</td>
-                        <td>{{ item.rateMin }}-{{ item.rateMax }}</td>
-                        <td>{{ item.createDate }}</td>
+                        <td>{{ item.cashMin | formatPrice }}-{{ item.cashMax | formatPrice }}</td>
+                        <td>{{ item.sendMin | formatPrice }}-{{ item.sendMax | formatPrice }}</td>
+                        <td>{{ item.conversionMin | formatPrice }}-{{ item.conversionMax | formatPrice }}</td>
+                        <td>{{ item.rateMin | formatPrice }}-{{ item.rateMax | formatPrice }}</td>
+                        <td>{{ item.createDate | formateDate}}</td>
                         <td>
-                          <button class="btn btn-success" @click='oneDelete(item.id)'>
+                          <button class="btn btn-primary" style="padding:2px 4px" @click='oneDelete(item.id)'>
                             <i class="fa fa-trash"></i>
                           </button>
                         </td>
                       </tr>
-                        </tbody>
-                        <tbody v-else>
-                        <tr>
-                            <td colspan="3">该报表暂无保存的搜索信息</td>
-                        </tr>
-                        </tbody>
+                      </tbody>
+                      <tbody v-else>
+                      <tr>
+                        <td colspan="3">该报表暂无保存的搜索信息</td>
+                      </tr>
+                      </tbody>
                     </table>
                 </div>
+
+              <div class="panel-footer text-right remove-padding-horizontal pager-footer">
+                <Pagination :currentPage="currentPage" :total="total" :pageSize="pageSize"
+                            :onPageChange="changePage"/>
+              </div>
             </div>
         </div>
     </div>
+
+
 </template>
 
 <script>
     import axios from 'axios';
+    import dayjs from 'dayjs';
+
 
     export default {
-        name: 'EditProfile',
-        props: ["reportType"],
-        data() {
-            return {
-                allInfo: null,
-            }
+      name: 'EditProfile',
+      props: ['reportType'],
+      data() {
+        return {
+          allInfo: null,
+          total: 20, // 总数
+          pageSize: 10, // 每页条数,
+        }
+      },
+      computed: {
+        // 当前页，从查询参数 page 返回
+        currentPage() {
+          return parseInt(this.$route.query.page) || 1
+        }
+      },
+      filters: {
+        formatPrice: function (value) {
+          let tempVal = parseFloat(value).toFixed(3)
+          return tempVal.substring(0, tempVal.length - 1)
         },
-        methods: {
-            getAll() {
-              axios.get(`http://127.0.0.1:8000/api/keywords/?reportType=${this.reportType}&email=` + localStorage.getItem('useremail')).then((res) => {
+        formateDate: function (date){
+          var dayjs = require('dayjs')
+          return dayjs.unix(date).format('YYYY-MM-DD')
+        }
 
-                this.allInfo = res.data['data']
-                console.log(this.allInfo)
-                console.log(this.allInfo.length)
-              })
-            },
-            oneDelete(id) {
+      },
+      methods: {
+        getAll() {
+          axios.get(`http://127.0.0.1:8000/api/keywords/?page=${this.currentPage}&email=` + localStorage.getItem('useremail')).then((res) => {
+            this.allInfo = res.data['data']
+            this.total = res.data['total']
+            console.log(this.allInfo)
+            console.log(this.total)
+          })
+        },
+        oneDelete(id) {
                 this.$swal({
                     text: '你确定要删除吗?',
-                    confirmButtonText: '删除'
+                  confirmButtonText: '删除'
                 }).then((res) => {
-                    if (res.value) {
-                        axios.delete('http://127.0.0.1:8000/api/keywords/', {data: {id: id}}).then((res) => {
-                            this.getAll();
-                        });
-                    }
+                  if (res.value) {
+                    axios.delete('http://127.0.0.1:8000/api/keywords/', {data: {id: id}}).then((res) => {
+                      this.getAll()
+                    })
+                  }
                 })
 
-            },
         },
+        changePage(page) {
+          // 在查询参数中混入 page，并跳转到该地址
+          // 混入部分等价于 Object.assign({}, this.$route.query, { page: page })
+
+          this.$router.push({query: {...this.$route.query, page}})
+          this.getAll();
+          // this.handleSearch()
+        }
+
+      },
         mounted() {
             this.getAll();
         }
