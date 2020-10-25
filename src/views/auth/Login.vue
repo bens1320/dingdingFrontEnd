@@ -56,7 +56,7 @@ export default {
         password: this.password,
         action: "login"
       }
-      axios.post('http://121.43.179.224:8000/api/users/', user).then((res)=> {
+      axios.post('http://127.0.0.1:8000/api/users/', user).then((res)=> {
         const code = parseInt(res.data['code'])
         const token = res.data['token']
         if(code === 1000){

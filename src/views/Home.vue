@@ -18,47 +18,44 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">每股分红</label>
                 <div class="col-sm-9" style="  display: flex;align-items: center;justify-content: space-between;">
-                  <span class="range-border">{{cashMin | formatPrice}}</span>
-                  <DoubleRangeSlider  style="width: 80%;" :minThreshold="0" :maxThreshold="2" :step="0.01" :min="0" :max="2"
-                                     @update:min="value => cashMin = value"
-                                     @update:max="value => cashMax = value"></DoubleRangeSlider>
-                  <span class="range-border">{{cashMax | formatPrice}}</span>
+                  <span class="range-border">{{ cashCurrentValue[0] | formatPrice }}</span>
+                  <vue-slider :tooltip="'none'" :process-style="{ backgroundColor:  '#00b5ad' }" style="width: 70%" v-model="cashCurrentValue" :min="0" :max="cashMaxRange"
+                              :interval="0.001"></vue-slider>
+                  <span class="range-border">{{ cashCurrentValue[1] | formatPrice }}</span>
                 </div>
               </div>
+
 
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">每股送股</label>
                 <div class="col-sm-9" style="  display: flex;align-items: center;justify-content: space-between;">
-                  <span class="range-border">{{sendMin | formatPrice}}</span>
-                  <DoubleRangeSlider2  style="width: 80%;" :min2Threshold="0" :max2Threshold="2" :step="0.01" :min2="0" :max2="2"
-                                      @update:min2="value => sendMin = value"
-                                      @update:max2="value => sendMax = value"></DoubleRangeSlider2>
-                  <span class="range-border">{{sendMax | formatPrice}}</span>
+                  <span class="range-border">{{ sendCurrentValue[0] | formatPrice }}</span>
+                  <vue-slider :tooltip="'none'" :process-style="{ backgroundColor:  '#00b5ad' }" style="width: 70%" v-model="sendCurrentValue" :min="0" :max="sendMaxRange"
+                              :interval="0.001"></vue-slider>
+                  <span class="range-border">{{ sendCurrentValue[1] | formatPrice }}</span>
                 </div>
               </div>
 
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">每股转股</label>
                 <div class="col-sm-9" style="  display: flex;align-items: center;justify-content: space-between;">
-                  <span class="range-border">{{conversionMin | formatPrice}}</span>
-                  <DoubleRangeSlider3 style="width: 80%;" :min3Threshold="0" :max3Threshold="2" :step="0.01" :min3="0" :max3="2"
-                                      @update:min3="value => conversionMin = value"
-                                      @update:max3="value => conversionMax = value"></DoubleRangeSlider3>
-                  <span class="range-border">{{conversionMax | formatPrice}}</span>
+                  <span class="range-border">{{ conversionCurrentValue[0] | formatPrice }}</span>
+                  <vue-slider :tooltip="'none'" :process-style="{ backgroundColor:  '#00b5ad' }" style="width: 70%" v-model="conversionCurrentValue" :min="0" :max="conversionMaxRange"
+                              :interval="0.001"></vue-slider>
+
+                  <span class="range-border">{{ conversionCurrentValue[1] | formatPrice }}</span>
                 </div>
               </div>
 
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">股息率</label>
                 <div class="col-sm-9" style="  display: flex;align-items: center;justify-content: space-between;">
-                  <span class="range-border">{{rateMin | formatPrice}}</span>
-                  <DoubleRangeSlider4  style="width: 80%;" :min4Threshold="0" :max4Threshold="2" :step="0.01" :min4="0" :max4="2"
-                                      @update:min4="value => rateMin = value"
-                                      @update:max4="value => rateMax = value"></DoubleRangeSlider4>
-                  <span class="range-border">{{rateMax | formatPrice}}</span>
+                  <span class="range-border">{{ rateCurrentValue[0] | formatPrice }}</span>
+                  <vue-slider :tooltip="'none'" :process-style="{ backgroundColor:  '#00b5ad' }" style="width: 70%" v-model="rateCurrentValue" :min="0" :max="rateMaxRange"
+                              :interval="0.001"></vue-slider>
+                  <span class="range-border">{{ rateCurrentValue[1] | formatPrice }}</span>
                 </div>
               </div>
-
 
 
               <button @click="handleSearch" type="submit" style=" width: 48%;"
@@ -123,40 +120,33 @@
         </div>
       </div>
     </div>
-
   </div>
-
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import axios from 'axios'
-import DoubleRangeSlider from '@/components/DoubleRangeSlider'
-import DoubleRangeSlider2 from '@/components/DoubleRangeSlider2'
-import DoubleRangeSlider3 from '@/components/DoubleRangeSlider3'
-import DoubleRangeSlider4 from '@/components/DoubleRangeSlider4'
+import VueSlider from 'vue-slider-component'
+import 'vue-slider-component/theme/default.css'
+
 
 export default {
 
   name: 'Home',
-  components: {
-    // 局部注册 TheSidebar
-    DoubleRangeSlider,
-    DoubleRangeSlider2,
-    DoubleRangeSlider3,
-    DoubleRangeSlider4,
-  },
+
   data() {
     return {
       nameOrId: '',
-      cashMin: 0,
-      cashMax: 2,
-      sendMin: 0,
-      sendMax: 2,
+      cashCurrentValue: [0, 5],
+      cashMaxRange: 10,
+      sendCurrentValue: [0, 6],
+      sendMaxRange: 11,
       conversionMin: 0,
       conversionMax: 2,
-      rateMin: 0,
-      rateMax: 2,
+      conversionCurrentValue: [0, 7],
+      conversionMaxRange: 12,
+      rateCurrentValue: [0, 8],
+      rateMaxRange: 13,
       value: '',
       dividendList: [],
       msg: '',
@@ -165,8 +155,12 @@ export default {
       total: 100, // 总数
       pageSize: 20, // 每页条数,
       isClickSearch: false,
-      maxValueList: []
     }
+  },
+
+  components: {
+    // 局部注册 TheSidebar
+    VueSlider
   },
 
   computed: {
@@ -174,7 +168,8 @@ export default {
     // 当前页，从查询参数 page 返回
     currentPage() {
       return parseInt(this.$route.query.page) || 1
-    }
+    },
+
 
   },
   watch: {
@@ -183,17 +178,16 @@ export default {
         this.showMsg('操作成功')
       }
     },
-
-
   },
 
   created() {
     this.loadDividendList()
+
   },
 
   filters: {
     formatPrice: function (value) {
-      let tempVal = parseFloat(value).toFixed(3)
+      let tempVal = parseFloat(value).toFixed(4)
       return tempVal.substring(0, tempVal.length - 1)
     }
   },
@@ -206,15 +200,15 @@ export default {
         if (code === 3001) {
           this.dividendList = res.data['data'] || []
           this.total = res.data['total']
-          // let maxValueList = res.data['maxValueList']
-          //
-          // this.cashMax = maxValueList[0]['cash__max']
-          // this.sendMax = maxValueList[1]['send__max']
-          // this.conversionMax = maxValueList[2]['conversion__max']
-          // this.rateMax = maxValueList[3]['rate__max']
-          // console.log(this.cashMax )
-          console.log(this.dividendList)
-          console.log(res.data['total'])
+          let maxValueList = res.data['maxValueList']
+          this.cashMaxRange = Number(maxValueList[0]['cash__max'].toFixed(3))
+          this.cashCurrentValue = [0, this.cashMaxRange]
+          this.sendMaxRange = Number(maxValueList[1]['send__max'].toFixed(3))
+          this.sendCurrentValue = [0, this.sendMaxRange]
+          this.conversionMaxRange = Number(maxValueList[2]['conversion__max'].toFixed(3))
+          this.conversionCurrentValue = [0, this.conversionMaxRange]
+          this.rateMaxRange = Number(maxValueList[3]['rate__max'].toFixed(3))
+          this.rateCurrentValue = [0, this.rateMaxRange]
         } else {
           this.showMsgWarning(msg)
         }
@@ -224,17 +218,18 @@ export default {
       this.$route.query.page = 1
       const search = {
         nameOrId: this.nameOrId,
-        cashMin: this.cashMin,
-        cashMax: this.cashMax,
-        sendMin: this.sendMin,
-        sendMax: this.sendMax,
-        conversionMin: this.conversionMin,
-        conversionMax: this.conversionMax,
-        rateMin: this.rateMin,
-        rateMax: this.rateMax,
+        cashMin: this.cashCurrentValue[0],
+        cashMax: this.cashCurrentValue[1],
+        sendMin: this.sendCurrentValue[0],
+        sendMax: this.sendCurrentValue[1],
+        conversionMin: this.conversionCurrentValue[0],
+        conversionMax: this.conversionCurrentValue[1],
+        rateMin: this.rateCurrentValue[0],
+        rateMax: this.rateCurrentValue[1],
         page: this.$route.query.page
       }
       console.log(search)
+      console.log("aaaa")
       axios.post('http://127.0.0.1:8000/api/dividends/', search).then((res) => {
         console.log('handleSearch')
         const code = parseInt(res.data['code'])
@@ -257,17 +252,16 @@ export default {
       const useremail = localStorage.getItem('useremail')
       console.log(useremail)
       if (useremail) {
-        var timestamp = Date.parse(new Date())
         const search = {
           nameOrId: this.nameOrId,
-          cashMin: String(this.cashMin),
-          cashMax: String(this.cashMax),
-          sendMin: this.sendMin,
-          sendMax: this.sendMax,
-          conversionMin: this.conversionMin,
-          conversionMax: this.conversionMax,
-          rateMin: this.rateMin,
-          rateMax: this.rateMax,
+          cashMin: this.cashCurrentValue[0],
+          cashMax: this.cashCurrentValue[1],
+          sendMin: this.sendCurrentValue[0],
+          sendMax: this.sendCurrentValue[1],
+          conversionMin: this.conversionCurrentValue[0],
+          conversionMax: this.conversionCurrentValue[1],
+          rateMin: this.rateCurrentValue[0],
+          rateMax: this.rateCurrentValue[1],
           email: localStorage.getItem('useremail'),
         }
         axios.post('http://127.0.0.1:8000/api/keywords/', search).then((res) => {
@@ -323,7 +317,8 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+
 
 .range-border{
   width: 10%;

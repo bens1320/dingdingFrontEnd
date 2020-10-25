@@ -13,6 +13,9 @@ export default function (id) {
   var min = parseFloat(slider.getAttribute('se-min'))
   var max = parseFloat(slider.getAttribute('se-max'))
 
+
+
+
   // retrieve default values
   var defaultMinValue = min
   if (slider.hasAttribute('se-min-value')) {
@@ -78,6 +81,7 @@ export default function (id) {
     lineSpan.style.width = touchRight.offsetLeft - touchLeft.offsetLeft + 'px'
     slider.setAttribute('se-max-value', maxValue)
   }
+
 
   // initial reset
   self.reset()
@@ -161,7 +165,7 @@ export default function (id) {
     if (self.onChange) {
       self.onChange(
         slider.getAttribute('se-min-value'),
-        slider.getAttribute('se-max-value')
+        slider.getAttribute('se-max-value'),
       )
     }
   }
@@ -221,4 +225,7 @@ export default function (id) {
   touchRight.addEventListener('mousedown', onStart)
   touchLeft.addEventListener('touchstart', onStart)
   touchRight.addEventListener('touchstart', onStart)
+
+
+
 }
