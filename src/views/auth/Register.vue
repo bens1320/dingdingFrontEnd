@@ -84,7 +84,7 @@ export default {
           action: "register"
           // avatar: `https://api.adorable.io/avatars/200/${this.email}.png`
         }
-        axios.post('http://127.0.0.1:8000/api/users/', user).then((res)=> {
+        axios.post(`${window.webSite}/api/users/`, user).then((res)=> {
           const code = parseInt(res.data['code'])
           if(code === 1000){
             this.login(user)

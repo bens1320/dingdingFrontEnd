@@ -86,7 +86,7 @@
       },
       methods: {
         getAll() {
-          axios.get(`http://127.0.0.1:8000/api/keywords/?page=${this.currentPage}&email=` + localStorage.getItem('useremail')).then((res) => {
+          axios.get(`${window.webSite}/api/keywords/?page=${this.currentPage}&email=` + localStorage.getItem('useremail')).then((res) => {
             this.allInfo = res.data['data']
             this.total = res.data['total']
             console.log(this.allInfo)
@@ -99,7 +99,7 @@
                   confirmButtonText: '删除'
                 }).then((res) => {
                   if (res.value) {
-                    axios.delete('http://127.0.0.1:8000/api/keywords/', {data: {id: id}}).then((res) => {
+                    axios.delete(`${window.webSite}/api/keywords/`, {data: {id: id}}).then((res) => {
                       this.getAll()
                     })
                   }

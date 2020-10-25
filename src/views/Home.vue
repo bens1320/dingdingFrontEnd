@@ -12,7 +12,7 @@
               <div class="form-group row">
                 <label for="nameOrId" class="col-sm-3 col-form-label">股票/代码</label>
                 <div class="col-sm-9">
-                  <input type="text" v-model.trim="nameOrId" class="form-control" id="nameOrId" placeholder="请输入股票名或股票代码">
+                  <input type="text" v-model.trim="nameOrId" class="form-control" id="nameOrId" placeholder="请输入股票名或股票代码（可选）">
                 </div>
               </div>
               <div class="form-group row">
@@ -182,7 +182,6 @@ export default {
 
   created() {
     this.loadDividendList()
-
   },
 
   filters: {
@@ -194,7 +193,7 @@ export default {
 
   methods: {
     loadDividendList() {
-      axios.get(`http://127.0.0.1:8000/api/dividends/?page=${this.currentPage}`).then((res) => {
+      axios.get(`${window.webSite}/api/dividends/?page=${this.currentPage}`).then((res) => {
         const code = parseInt(res.data['code'])
         const msg = res.data['msg']
         if (code === 3001) {
@@ -215,7 +214,6 @@ export default {
       })
     },
     handleSearch() {
-      this.$route.query.page = 1
       const search = {
         nameOrId: this.nameOrId,
         cashMin: this.cashCurrentValue[0],
@@ -226,11 +224,12 @@ export default {
         conversionMax: this.conversionCurrentValue[1],
         rateMin: this.rateCurrentValue[0],
         rateMax: this.rateCurrentValue[1],
-        page: this.$route.query.page
+        page: this.$route.query.page | 1
       }
+
       console.log(search)
       console.log("aaaa")
-      axios.post('http://127.0.0.1:8000/api/dividends/', search).then((res) => {
+      axios.post(`${window.webSite}/api/dividends/`, search).then((res) => {
         console.log('handleSearch')
         const code = parseInt(res.data['code'])
         const msg = res.data['msg']
@@ -240,6 +239,7 @@ export default {
           this.showMsgSuccess(msg)
           this.total = res.data['total']
           this.isClickSearch = true
+          this.currentPage = res.data['page']
           console.log(this.dividendList)
         } else {
           this.showMsgWarning(msg)
@@ -264,7 +264,7 @@ export default {
           rateMax: this.rateCurrentValue[1],
           email: localStorage.getItem('useremail'),
         }
-        axios.post('http://127.0.0.1:8000/api/keywords/', search).then((res) => {
+        axios.post(`${window.webSite}/api/keywords/`, search).then((res) => {
           console.log(res.data)
           const code = parseInt(res.data['code'])
           const msg = res.data['msg']
@@ -299,7 +299,11 @@ export default {
       this.msgType = type
       this.msgShow = true
     },
-
+    showMsg(msg, type = 'success') {
+      this.msg = msg
+      this.msgType = type
+      this.msgShow = true
+    },
     // 回调，组件的当前页改变时调用
     changePage(page) {
       // 在查询参数中混入 page，并跳转到该地址
