@@ -70,7 +70,6 @@
                 }).then((res) => {
                     if (res.value) {
                         axios.delete('http://121.43.179.224:8000/api/keywords/', {data: {id: id}}).then((res) => {
-                            console.log(res.data)
                             this.getAll();
                         });
                     }

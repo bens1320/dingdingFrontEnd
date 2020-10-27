@@ -4,13 +4,15 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "build:dev":"cross-env NODE_ENV=development yarn build"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
     "axios": "^0.19.2",
     "bootstrap-sass": "^3.4.1",
     "core-js": "^3.6.4",
+    "cross-env": "^7.0.2",
     "dayjs": "^1.9.4",
     "font-awesome": "^4.7.0",
     "global": "^4.4.0",

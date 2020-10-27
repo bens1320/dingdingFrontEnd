@@ -20,7 +20,7 @@
                       </thead>
                       <tbody v-if="allInfo && allInfo.length > 0">
                       <tr v-for='item in allInfo' :key='item.id'>
-                        <td>{{ item.nameOrId === '' ? 'All' : item.title_code }}</td>
+                        <td>{{ item.nameOrId === '' ? 'All' : item.nameOrId }}</td>
                         <td>{{ item.cashMin | formatPrice }}-{{ item.cashMax | formatPrice }}</td>
                         <td>{{ item.sendMin | formatPrice }}-{{ item.sendMax | formatPrice }}</td>
                         <td>{{ item.conversionMin | formatPrice }}-{{ item.conversionMax | formatPrice }}</td>
@@ -87,10 +87,9 @@
       methods: {
         getAll() {
           axios.get(`${window.webSite}/api/keywords/?page=${this.currentPage}&email=` + localStorage.getItem('useremail')).then((res) => {
+            console.log(res.data['data'])
             this.allInfo = res.data['data']
             this.total = res.data['total']
-            console.log(this.allInfo)
-            console.log(this.total)
           })
         },
         oneDelete(id) {

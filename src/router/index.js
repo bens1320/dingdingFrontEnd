@@ -12,6 +12,7 @@ Vue.use(Router)
 
 const router = new Router({
   mode: 'history',
+  base: process.env.NODE_ENV === 'development' ? '/' : '/dingding/',
   linkExactActiveClass: 'active',
   // 指定滚动行为
   scrollBehavior(to, from, savedPosition) {

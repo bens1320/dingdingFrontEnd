@@ -8,9 +8,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 module.exports = {
   lintOnSave: false,
   runtimeCompiler: true,
-  publicPath: process.env.NODE_ENV === 'production'
-    ? '/'
-    : '/',
+  publicPath: process.env.NODE_ENV === 'development' ? '/' : '/dingding/',
   // 这是前端解决跨域的代码
   devServer: {
     // open: process.platform === 'darwin',
