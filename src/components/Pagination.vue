@@ -33,7 +33,7 @@
     </li>
   </ul>
 
-  <ul v-else class="pagination">
+  <ul v-else-if="total > 0" class="pagination">
     <li :class="{ disabled: internalCurrentPage === 1 }">
       <a href="javascript:;" @click="changePage(internalCurrentPage - 1)">«</a>
     </li>

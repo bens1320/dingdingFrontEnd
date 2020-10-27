@@ -18,7 +18,7 @@
       <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse', { in: showCollapsedNav }]">
         <ul class="nav navbar-nav">
           <li v-for="(item, index) in navList" :class="{ active: index === activeNavIndex }">
-            <a href="/">{{ item }}</a>
+            <a href="https://csubigdata.com/dingding/">{{ item }}</a>
           </li>
         </ul>
         <!-- 入口组件 -->

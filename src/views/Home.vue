@@ -50,10 +50,10 @@
               <div class="form-group row">
                 <label class="col-sm-3 col-form-label">股息率</label>
                 <div class="col-sm-9" style="  display: flex;align-items: center;justify-content: space-between;">
-                  <span class="range-border">{{ rateCurrentValue[0] | formatPrice }}</span>
+                  <span class="range-border">{{ rateCurrentValue[0] * 100 | formatPrice3 }} %</span>
                   <vue-slider :tooltip="'none'" :process-style="{ backgroundColor:  '#00b5ad' }" style="width: 70%" v-model="rateCurrentValue" :min="0" :max="rateMaxRange"
                               :interval="0.001"></vue-slider>
-                  <span class="range-border">{{ rateCurrentValue[1] | formatPrice }}</span>
+                  <span class="range-border">{{ rateCurrentValue[1] * 100 | formatPrice3 }} %</span>
                 </div>
               </div>
 
@@ -188,6 +188,10 @@ export default {
     formatPrice: function (value) {
       let tempVal = parseFloat(value).toFixed(4)
       return tempVal.substring(0, tempVal.length - 1)
+    },
+    formatPrice3: function (value) {
+      let tempVal = parseFloat(value).toFixed(2)
+      return tempVal.substring(0, tempVal.length - 1)
     }
   },
 
@@ -281,9 +285,12 @@ export default {
           text: '该功能需要登录',
           confirmButtonText: '登录'
         }).then((res) => {
-          this.$router.push({
-            name: 'Login'
-          })
+          if(res.value){
+            this.$router.push({
+              name: 'Login'
+            })
+          }
+
         })
       }
 
