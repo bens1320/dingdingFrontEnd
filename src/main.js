@@ -16,8 +16,8 @@ import './mock'
 // 引入 axios 的默认值
 import axios from 'axios'
 
-// window.webSite = 'http://127.0.0.1:8000'
-window.webSite = 'https://csubigdata.com/dingding_backend'
+window.webSite = 'http://127.0.0.1:8000'
+// window.webSite = 'https://csubigdata.com/dingding_backend'
 
 // 将 axios 添加到 Vue.prototype 上，使其在实例内部的所有组件中可用
 Vue.prototype.$axios = axios

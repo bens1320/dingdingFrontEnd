@@ -81,6 +81,7 @@
               <th scope="col">股票名称</th>
               <th scope="col">每股分红</th>
               <th scope="col">股息率</th>
+              <th scope="col">当前股价</th>
               <th scope="col">每股送股</th>
               <th scope="col">每股转股</th>
               <th scope="col">公告标题</th>
@@ -93,6 +94,7 @@
               <td>{{ dividend.name }}</td>
               <td>{{dividend.cash !== 0 ? dividend.cash : ''}}</td>
               <td v-if="dividend.rate !== 0">{{ dividend.rate * 100  | formatPrice}} %</td><td v-else></td>
+              <td>{{ dividend.stockPrice !== 0 ? dividend.stockPrice : '' }}</td>
               <td>{{ dividend.send !== 0 ? dividend.send : '' }}</td>
               <td>{{ dividend.conversion !== 0 ? dividend.conversion : ''  }}</td>
               <td>
@@ -202,6 +204,7 @@ export default {
         const msg = res.data['msg']
         if (code === 3001) {
           this.dividendList = res.data['data'] || []
+          console.log(this.dividendList)
           this.total = res.data['total']
           let maxValueList = res.data['maxValueList']
           this.cashMaxRange = Number(maxValueList[0]['cash__max'].toFixed(3))
