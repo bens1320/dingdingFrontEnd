@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build:dev":"cross-env NODE_ENV=development yarn build"
+    "build:dev": "cross-env NODE_ENV=development yarn build"
   },
   "dependencies": {
     "animate.css": "^3.7.2",
@@ -29,6 +29,7 @@
     "vue": "^2.6.11",
     "vue-router": "^3.1.6",
     "vue-slider-component": "^3.2.9",
+    "vuejs-datepicker": "^1.6.2",
     "vuex": "^3.3.0"
   },
   "devDependencies": {

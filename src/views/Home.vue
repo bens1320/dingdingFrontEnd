@@ -51,12 +51,19 @@
                 <label class="col-sm-3 col-form-label">股息率</label>
                 <div class="col-sm-9" style="  display: flex;align-items: center;justify-content: space-between;">
                   <span class="range-border">{{ rateCurrentValue[0] * 100 | formatPrice3 }} %</span>
-                  <vue-slider :tooltip="'none'" :process-style="{ backgroundColor:  '#00b5ad' }" style="width: 70%" v-model="rateCurrentValue" :min="0" :max="rateMaxRange"
+                  <vue-slider :tooltip="'none'" :process-style="{ backgroundColor:  '#00b5ad' }" style="width: 70%"
+                              v-model="rateCurrentValue" :min="0" :max="rateMaxRange"
                               :interval="0.001"></vue-slider>
                   <span class="range-border">{{ rateCurrentValue[1] * 100 | formatPrice3 }} %</span>
                 </div>
               </div>
-
+              <div class="form-group row">
+                <label class="col-sm-3 col-form-label">日期</label>
+                <div class="col-sm-9" style="  display: flex;align-items: center;justify-content: space-between;">
+                  <datepicker style="width: 48%" placeholder="开始时间" input-class="form-control" :format="dateFormat" :language="zh" v-model="startDate"></datepicker>-
+                  <datepicker style="width: 48%" placeholder="结束时间" input-class="form-control" :format="dateFormat" :language="zh" v-model="endDate"></datepicker>
+                </div>
+              </div>
 
               <button @click="handleSearch" type="submit" style=" width: 48%;"
                       class="btn btn-primary">
@@ -130,12 +137,19 @@ import {mapState} from 'vuex'
 import axios from 'axios'
 import VueSlider from 'vue-slider-component'
 import 'vue-slider-component/theme/default.css'
+import Datepicker from 'vuejs-datepicker'
+import {zh} from 'vuejs-datepicker/dist/locale'
 
 
 export default {
 
   name: 'Home',
 
+  components: {
+    // 局部注册 TheSidebar
+    VueSlider,
+    Datepicker
+  },
   data() {
     return {
       nameOrId: '',
@@ -157,13 +171,13 @@ export default {
       total: 100, // 总数
       pageSize: 20, // 每页条数,
       isClickSearch: false,
+      startDate: '2020-01-01',
+      endDate: '2020-10-28',
+      zh: zh,
+      dateFormat: 'yyyy-MM-dd'
     }
   },
 
-  components: {
-    // 局部注册 TheSidebar
-    VueSlider
-  },
 
   computed: {
     ...mapState(['auth', 'user']),
@@ -179,10 +193,13 @@ export default {
       if (!value) {
         this.showMsg('操作成功')
       }
-    },
+    }
   },
 
   created() {
+    let dayjs = require('dayjs')
+    this.endDate = dayjs().format('YYYY-MM-DD')
+
     this.loadDividendList()
   },
 
@@ -231,11 +248,12 @@ export default {
         conversionMax: this.conversionCurrentValue[1],
         rateMin: this.rateCurrentValue[0],
         rateMax: this.rateCurrentValue[1],
-        page: this.$route.query.page | 1
+        page: this.$route.query.page | 1,
+        startDate: this.startDate,
+        endDate: this.endDate
       }
 
       console.log(search)
-      console.log("aaaa")
       axios.post(`${window.webSite}/api/dividends/`, search).then((res) => {
         console.log('handleSearch')
         const code = parseInt(res.data['code'])
@@ -332,7 +350,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
 
 .range-border{
   width: 10%;

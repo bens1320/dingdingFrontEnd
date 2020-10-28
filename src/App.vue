@@ -24,6 +24,7 @@ export default {
 </script>
 
 <style lang="scss">
+
 $container-large-desktop: 1200px;
 $btn-primary-bg: #00b5ad;
 $btn-primary-border: #00b5ad;
