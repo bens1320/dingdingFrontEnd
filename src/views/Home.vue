@@ -221,7 +221,6 @@ export default {
         const msg = res.data['msg']
         if (code === 3001) {
           this.dividendList = res.data['data'] || []
-          console.log(this.dividendList)
           this.total = res.data['total']
           let maxValueList = res.data['maxValueList']
           this.cashMaxRange = Number(maxValueList[0]['cash__max'].toFixed(3))
@@ -253,19 +252,15 @@ export default {
         endDate: this.endDate
       }
 
-      console.log(search)
       axios.post(`${window.webSite}/api/dividends/`, search).then((res) => {
-        console.log('handleSearch')
         const code = parseInt(res.data['code'])
         const msg = res.data['msg']
-        console.log(res.data)
         if (code === 2001) {
           this.dividendList = res.data['data'] || []
           this.showMsgSuccess(msg)
           this.total = res.data['total']
           this.isClickSearch = true
           this.currentPage = res.data['page']
-          console.log(this.dividendList)
         } else {
           this.showMsgWarning(msg)
 
@@ -275,7 +270,6 @@ export default {
 
     save() {
       const useremail = localStorage.getItem('useremail')
-      console.log(useremail)
       if (useremail) {
         const search = {
           nameOrId: this.nameOrId,
@@ -290,12 +284,10 @@ export default {
           email: localStorage.getItem('useremail'),
         }
         axios.post(`${window.webSite}/api/keywords/`, search).then((res) => {
-          console.log(res.data)
           const code = parseInt(res.data['code'])
           const msg = res.data['msg']
           this.showMsgSuccess(msg)
           if (code === 3001) {
-            console.log(code)
             this.showMsgSuccess(msg)
           } else {
             this.showMsgWarning(msg)
