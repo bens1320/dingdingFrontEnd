@@ -5,6 +5,11 @@ export default [
         component: () => import('@/views/auth/Register')
     },
     {
+        path: "/forecast",
+        name: "Forecast",
+        component: () => import('@/views/Forecast')
+    },
+    {
         path: '/',
         name: 'Home',
         alias: '/topics',

@@ -17,8 +17,11 @@
 
       <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse', { in: showCollapsedNav }]">
         <ul class="nav navbar-nav">
-          <li v-for="(item, index) in navList" :class="{ active: index === activeNavIndex }">
-            <a href="https://csubigdata.com/dingding/">{{ item }}</a>
+          <li style="display: inline">
+            <a href="http://localhost:8080/">分红</a>
+          </li>
+          <li>
+            <a href="http://localhost:8080/forecast">预告</a>
           </li>
         </ul>
         <!-- 入口组件 -->
@@ -44,7 +47,7 @@ export default {
         src: `${this.uploadsUrl}images/2020/07/11/fBCXj.png`,
         title: '帮我盯着'
       },
-      navList: ['首页'],
+      navList: ['首页', '预告'],
       activeNavIndex: 0,
       showCollapsedNav: false
     }

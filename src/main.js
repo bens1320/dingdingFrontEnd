@@ -16,12 +16,27 @@ import './mock'
 // 引入 axios 的默认值
 import axios from 'axios'
 
+import 'xe-utils'
+import VXETable from 'vxe-table'
+import 'vxe-table/lib/style.css'
+
+import Antd from 'ant-design-vue';
+import 'ant-design-vue/dist/antd.css';
+
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+
+Vue.config.productionTip = false;
+
+Vue.use(ElementUI);
+Vue.use(Antd);
 // window.webSite = 'http://127.0.0.1:8000'
 window.webSite = 'https://csubigdata.com/dingding_backend'
 
 // 将 axios 添加到 Vue.prototype 上，使其在实例内部的所有组件中可用
 Vue.prototype.$axios = axios
 
+Vue.use(VXETable)
 Vue.use(VueSweetalert2)
 // 使用插件
 Vue.use(Message)

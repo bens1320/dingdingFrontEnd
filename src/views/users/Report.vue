@@ -39,6 +39,36 @@
                       </tr>
                       </tbody>
                     </table>
+                  <hr/>
+                    <table class="table text-center">
+                    <thead>
+                    <th class="text-center">报告期</th>
+                    <th class="text-center">市场</th>
+                    <th class="text-center">业绩类型</th>
+                    <th class="text-center">净利润增长下限</th>
+                    <th class="text-center">净利润增长上限</th>
+                    <th class="text-center">操作</th>
+                    </thead>
+                    <tbody v-if="allForecastInfo && allForecastInfo.length > 0">
+                    <tr v-for='(item, i) in allForecastInfo' :key='i'>
+                      <td>{{ item[0] }}</td>
+                      <td>{{ item[1] === '' ? 'All' : item[1] }}</td>
+                      <td>{{ item[2] }}</td>
+                      <td>{{ item[3] }}</td>
+                      <td>{{ item[4] }}</td>
+                      <td>
+                        <button class="btn btn-primary" style="padding:2px 4px" @click='oneForecastDelete(i)'>
+                          <i class="fa fa-trash"></i>
+                        </button>
+                      </td>
+                    </tr>
+                    </tbody>
+                    <tbody v-else>
+                    <tr>
+                      <td colspan="3">该报表暂无保存的搜索信息</td>
+                    </tr>
+                    </tbody>
+                  </table>
                 </div>
 
               <div class="panel-footer text-right remove-padding-horizontal pager-footer">
@@ -54,8 +84,6 @@
 
 <script>
     import axios from 'axios';
-    import dayjs from 'dayjs';
-
 
     export default {
       name: 'EditProfile',
@@ -65,6 +93,8 @@
           allInfo: null,
           total: 20, // 总数
           pageSize: 10, // 每页条数,
+          allForecastInfo: null,
+          url: 'https://csubigdata.com/dingding_backend/api/indicator/'
         }
       },
       computed: {
@@ -87,9 +117,19 @@
       methods: {
         getAll() {
           axios.get(`${window.webSite}/api/keywords/?page=${this.currentPage}&email=` + localStorage.getItem('useremail')).then((res) => {
-            console.log(res.data['data'])
             this.allInfo = res.data['data']
             this.total = res.data['total']
+          })
+        },
+        getForecastAll(){
+          axios.get(this.url, {
+            params:{
+              qtype: 'user_query',
+              email: localStorage.getItem('useremail')
+            }
+          }).then((res) =>{
+            let data = res['data']
+            this.allForecastInfo = data['records']
           })
         },
         oneDelete(id) {
@@ -103,7 +143,28 @@
                     })
                   }
                 })
-
+        },
+        oneForecastDelete(i){
+          this.$swal({
+            text: '你确定要删除吗?',
+            confirmButtonText: '删除'
+          }).then((res) => {
+            if (res.value) {
+              axios.get(this.url, {
+                params: {
+                  qtype: 'delete',
+                  period: this.allForecastInfo[i][0],
+                  market: this.allForecastInfo[i][1],
+                  type: this.allForecastInfo[i][2],
+                  low_limit: this.allForecastInfo[i][3],
+                  high_limit: this.allForecastInfo[i][4],
+                  email: localStorage.getItem('useremail')
+                }
+              }).then(()=>{
+                this.getForecastAll()
+              })
+            }
+          })
         },
         changePage(page) {
           // 在查询参数中混入 page，并跳转到该地址
@@ -117,6 +178,7 @@
       },
         mounted() {
             this.getAll();
+            this.getForecastAll();
         }
     }
 </script>

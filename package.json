@@ -15,6 +15,7 @@
     "core-js": "^3.6.4",
     "cross-env": "^7.0.2",
     "dayjs": "^1.9.4",
+    "echarts": "^4.9.0",
     "element-ui": "^2.15.1",
     "font-awesome": "^4.7.0",
     "global": "^4.4.0",
@@ -32,7 +33,9 @@
     "vue-router": "^3.1.6",
     "vue-slider-component": "^3.2.9",
     "vuejs-datepicker": "^1.6.2",
-    "vuex": "^3.3.0"
+    "vuex": "^3.3.0",
+    "vxe-table": "^3.2.10",
+    "xe-utils": "^3.1.13"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
