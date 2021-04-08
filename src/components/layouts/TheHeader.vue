@@ -18,10 +18,10 @@
       <div id="top-navbar-collapse" :class="['collapse', 'navbar-collapse', { in: showCollapsedNav }]">
         <ul class="nav navbar-nav">
           <li style="display: inline">
-            <a href="http://localhost:8080/">分红</a>
+            <a href="https://csubigdata.com/dingding/">分红</a>
           </li>
           <li>
-            <a href="http://localhost:8080/forecast">预告</a>
+            <a href="https://csubigdata.com/dingding/forecast/">预告</a>
           </li>
         </ul>
         <!-- 入口组件 -->

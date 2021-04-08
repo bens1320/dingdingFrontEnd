@@ -256,6 +256,8 @@ export default {
           for (let j =0 ; j < this.day_range_value; j++){
             if (daily_pcr[i][j]){
               tableDict[j+1] = daily_pcr[i][j].toFixed(2)
+            }else if (j !== this.day_range_value-1 && daily_pcr[i][j+1]){
+              tableDict[j+1] = '0'
             }else{
               tableDict[j+1] = null
             }
