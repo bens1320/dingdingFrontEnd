@@ -120,6 +120,7 @@ export default {
       option1: null,
       option2: null,
       tableData: [],
+      stock_num: [],
       msg: null,
       msgType: null,
       msgShow: null,
@@ -176,7 +177,7 @@ export default {
         let daily_inc_r = data['daily_inc_r']
         let daily_average_pcr = data['daily_average_pcr']
         let day_num_seq = []
-        let stock_num = data['stock_num']
+        this.stock_num = data['stock_num']
         let ann_dates = data['ann_date']
         let p_change = data['p_change']
         for (let i = 1; i <= daily_inc_r.length; i++) {
@@ -203,7 +204,7 @@ export default {
           tooltip: {show: true, trigger: 'axis', formatter: function (params){
               let dataIndex = params[0]['dataIndex']
               return '涨占比:' + params[0]['data'] + "<br/>"
-                  + '有值的股票数量:' + stock_num[dataIndex]
+                  + '有值的股票数量:' + this.stock_num[dataIndex]
             }},
           toolbox:{
             show: true,
@@ -232,10 +233,10 @@ export default {
               shadowOffsetY: 2
             }
           }, {show: true, type: 'inside', top: '90%', start: 0, end: 100}],
-          tooltip: {show: true, trigger: 'axis',formatter: function (params){
+          tooltip: {show: true, trigger: 'axis',formatter: (params) => {
               let dataIndex = params[0]['dataIndex']
               return '涨跌幅算术平均值:' + params[0]['data'] + "<br/>"
-                  + '有值的股票数量:' + stock_num[dataIndex]
+                  + '有值的股票数量:' + this.stock_num[dataIndex]
             }},
           toolbox:{
             show: true,
@@ -282,7 +283,7 @@ export default {
             return '平均'
           }
           if (parseInt(columnIndex) >= 3) {
-            return (XEUtils.sum(data, column.property) / this.tableData.length).toFixed(2)
+            return (XEUtils.sum(data, column.property) / this.stock_num[columnIndex-3]).toFixed(2)
           }
           return '-'
         })
